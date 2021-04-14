@@ -1,0 +1,8 @@
+com/yunli/bigdata/producer/sample/util/UriComponentsBuilderUtil.class
+com/yunli/bigdata/producer/sample/ProducerApplication.class
+com/yunli/bigdata/producer/sample/service/EventSenderService.class
+com/yunli/bigdata/producer/sample/dto/response/WriteDataToTopicResponse.class
+com/yunli/bigdata/producer/sample/configuration/RestConfiguration.class
+com/yunli/bigdata/producer/sample/util/RestTemplateUtil.class
+com/yunli/bigdata/producer/sample/domain/TopicMessage.class
+com/yunli/bigdata/producer/sample/controller/MessageSenderController.class
