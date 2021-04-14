@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yunli.bigdata.infrastructure.foundation.CompressionAlgorithm;
 import com.yunli.bigdata.infrastructure.foundation.CompressionProcessor;
 import com.yunli.bigdata.infrastructure.foundation.CompressionProcessorFactory;
+import com.yunli.bigdata.infrastructure.foundation.util.JsonUtil;
 import com.yunli.bigdata.producer.sample.domain.TopicMessage;
 import com.yunli.bigdata.producer.sample.dto.response.WriteDataToTopicResponse;
 import com.yunli.bigdata.producer.sample.util.UriComponentsBuilderUtil;
@@ -34,7 +35,9 @@ import com.yunli.bigdata.producer.sample.util.UriComponentsBuilderUtil;
 public class EventSenderService {
 
 
-  private static final String SERVER_ADDRESS = "http://172.30.13.177:30003/x-storage-service";
+//  private static final String SERVER_ADDRESS = "http://172.30.13.177:30003/x-storage-service";
+
+  private static final String SERVER_ADDRESS = "http://localhost:48183";
 
   private final RestTemplate restTemplate;
 
@@ -76,23 +79,15 @@ public class EventSenderService {
     Map<String, Object> item1 = new HashMap<>();
     item1.put("stcd", "1000001");
     item1.put("tm", new Date());
-    item1.put("drp", 3.3);
+    item1.put("drp", 13.3);
     item1.put("dyp", 21.5);
     data.add(item1);
     topicMessage.setData(data);
 
-    // 序列化
-    ObjectMapper mapper = new ObjectMapper();
-    String jsonString = null;
-    try {
-      jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(topicMessage);
-    } catch (JsonProcessingException e) {
-      e.printStackTrace();
-    }
-    if (jsonString == null) {
-      throw new RuntimeException("the data is null error");
-    }
-    CompressionProcessor compressionProcessor = CompressionProcessorFactory.get(CompressionAlgorithm.Snappy);
-    return compressionProcessor.compress(jsonString.getBytes(StandardCharsets.UTF_8));
+    String message = JsonUtil.writeValueAsString(topicMessage);
+    return message.getBytes(StandardCharsets.UTF_8);
+    // 下面是使用压缩算法进行压缩，如果发送端压缩了，请在使用消息的时候用同样的算法解压缩再处理消息
+//    CompressionProcessor compressionProcessor = CompressionProcessorFactory.get(CompressionAlgorithm.Snappy);
+//    return compressionProcessor.compress(jsonString.getBytes(StandardCharsets.UTF_8));
   }
 }
