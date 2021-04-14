@@ -1,8 +1,0 @@
-/Users/david/CompanyProject/1big_data_platform/0code/v2/producer-sample/src/main/java/com/yunli/bigdata/producer/sample/configuration/RestConfiguration.java
-/Users/david/CompanyProject/1big_data_platform/0code/v2/producer-sample/src/main/java/com/yunli/bigdata/producer/sample/util/UriComponentsBuilderUtil.java
-/Users/david/CompanyProject/1big_data_platform/0code/v2/producer-sample/src/main/java/com/yunli/bigdata/producer/sample/service/EventSenderService.java
-/Users/david/CompanyProject/1big_data_platform/0code/v2/producer-sample/src/main/java/com/yunli/bigdata/producer/sample/dto/response/WriteDataToTopicResponse.java
-/Users/david/CompanyProject/1big_data_platform/0code/v2/producer-sample/src/main/java/com/yunli/bigdata/producer/sample/controller/MessageSenderController.java
-/Users/david/CompanyProject/1big_data_platform/0code/v2/producer-sample/src/main/java/com/yunli/bigdata/producer/sample/domain/TopicMessage.java
-/Users/david/CompanyProject/1big_data_platform/0code/v2/producer-sample/src/main/java/com/yunli/bigdata/producer/sample/util/RestTemplateUtil.java
-/Users/david/CompanyProject/1big_data_platform/0code/v2/producer-sample/src/main/java/com/yunli/bigdata/producer/sample/ProducerApplication.java
