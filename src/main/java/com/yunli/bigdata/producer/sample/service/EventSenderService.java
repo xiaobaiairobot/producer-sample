@@ -48,10 +48,10 @@ public class EventSenderService {
     this.restTemplate = restTemplate;
   }
 
-  public void sendMessage(Long topicId, Long typeId, String compressionAlgorithm, String token) {
+  public void sendMessage(Long topicId, String typeCode, String compressionAlgorithm, String token) {
     // ToStringSerializerBase toStringSerializerBase
     UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(SERVER_ADDRESS)
-        .pathSegment("storages", "topics", String.valueOf(topicId), "types", String.valueOf(typeId), "data");
+        .pathSegment("storages", "topics", String.valueOf(topicId), "types", typeCode, "data");
     UriComponentsBuilderUtil.addQueryParam(builder, "compressionAlgorithm", compressionAlgorithm);
     byte[] data = this.generateData();
 
@@ -79,12 +79,14 @@ public class EventSenderService {
     Map<String, Object> item1 = new HashMap<>();
     item1.put("stcd", "1000001");
     item1.put("tm", new Date());
-    item1.put("drp", 13.3);
-    item1.put("dyp", 21.5);
+    item1.put("drp", 22.1);
+    item1.put("dyp", 19.3);
     data.add(item1);
     topicMessage.setData(data);
 
     String message = JsonUtil.writeValueAsString(topicMessage);
+    // System.out.println(message);
+
     return message.getBytes(StandardCharsets.UTF_8);
     // 下面是使用压缩算法进行压缩，如果发送端压缩了，请在使用消息的时候用同样的算法解压缩再处理消息
 //    CompressionProcessor compressionProcessor = CompressionProcessorFactory.get(CompressionAlgorithm.Snappy);
