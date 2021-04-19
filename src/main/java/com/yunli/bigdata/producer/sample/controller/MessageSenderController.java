@@ -27,8 +27,8 @@ public class MessageSenderController {
   @GetMapping(value = "")
   public ResponseEntity<String> sendMessage() {
     try {
-      String token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySWQiOiI5Y2I3YTJiZi02MjEyLTQ1N2QtOThjNC0wNTMzODU3NWU4NGMiLCJ0ZW5hbnRJZCI6IjQyMjZjOGM2LWI1ZTEtNDJiYS1iYmZjLTliOWU4NDY1MTJmYyIsImV4cGlyZWQiOiIyMDIxLTA0LTE2IDE1OjA4OjIwIiwiZXhwIjoxNjE4NTU2OTAwfQ.yykwsNAoM-nqoU8v5a9jsbXCqIxPaREjaWqQYCCcK2YaQ4mOv3AgHXqqy2QhXZHCwm7liwaFWrtKTGOm1S23zA";
-      eventSenderService.sendMessage(10L, "rain", "none", token);
+      String token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySWQiOiI5Y2I3YTJiZi02MjEyLTQ1N2QtOThjNC0wNTMzODU3NWU4NGMiLCJ0ZW5hbnRJZCI6IjQyMjZjOGM2LWI1ZTEtNDJiYS1iYmZjLTliOWU4NDY1MTJmYyIsImV4cGlyZWQiOiIyMDIxLTA0LTE3IDA5OjA3OjExIiwiZXhwIjoxNjE4NjIxNjMxfQ.Z_19tV_lmVzmjf1Ky3ERZpHxbOeEZFm_b14EhNyXmv8jsWcUt2ENQ6CktAINV4PJ9K7LNbGKS1hkhMqASHw7Hg";
+      eventSenderService.sendMessage(11L, "rain", "none", token);
       return ResponseEntity.ok().body("success");
     } catch (Exception ex) {
       ex.printStackTrace();
