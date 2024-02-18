@@ -10,8 +10,13 @@ import org.springframework.web.client.RestTemplate;
  */
 @Component
 public class RestConfiguration {
-  @Bean
+  @Bean("httpTemplate")
   public RestTemplate restTemplate() {
     return new RestTemplate();
+  }
+
+  @Bean("httpsTemplate")
+  public RestTemplate httpsRestTemplate() {
+    return new RestTemplate(new HttpsClientRequestFactory());
   }
 }

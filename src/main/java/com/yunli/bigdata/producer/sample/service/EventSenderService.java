@@ -7,9 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -17,11 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yunli.bigdata.infrastructure.foundation.CompressionAlgorithm;
-import com.yunli.bigdata.infrastructure.foundation.CompressionProcessor;
-import com.yunli.bigdata.infrastructure.foundation.CompressionProcessorFactory;
 import com.yunli.bigdata.infrastructure.foundation.util.JsonUtil;
 import com.yunli.bigdata.producer.sample.domain.TopicMessage;
 import com.yunli.bigdata.producer.sample.dto.response.WriteDataToTopicResponse;
@@ -34,18 +31,17 @@ import com.yunli.bigdata.producer.sample.util.UriComponentsBuilderUtil;
 @Service
 public class EventSenderService {
 
-  private static final String SERVER_ADDRESS = "http://172.30.13.177:30003/x-storage-service";
+  private static final String SERVER_ADDRESS = "http://172.30.13.177:30015/x-storage-service";
 
 //  private static final String SERVER_ADDRESS = "http://localhost:48183";
 
-  private final RestTemplate restTemplate;
+  @Resource(name = "httpTemplate")
+  private RestTemplate httpRestTemplate;
+
+  @Resource(name = "httpsTemplate")
+  private RestTemplate httpsRestTemplate;
 
   private final Logger LOGGER = LoggerFactory.getLogger(EventSenderService.class);
-
-  @Autowired
-  public EventSenderService(RestTemplate restTemplate) {
-    this.restTemplate = restTemplate;
-  }
 
   public void sendMessage(Long topicId, String typeCode, String compressionAlgorithm, String token) {
     // ToStringSerializerBase toStringSerializerBase
@@ -54,11 +50,21 @@ public class EventSenderService {
     UriComponentsBuilderUtil.addQueryParam(builder, "compressionAlgorithm", compressionAlgorithm);
     byte[] data = this.generateData();
 
+    if(StringUtils.isBlank(SERVER_ADDRESS)) {
+      throw new NullPointerException("the address is null");
+    }
+    WriteDataToTopicResponse response;
     HttpHeaders headers = new HttpHeaders();
     headers.add("x-token", token);
-    WriteDataToTopicResponse response = this.restTemplate
-        .exchange(builder.build().encode().toUri(), HttpMethod.POST, new HttpEntity<>(data, headers),
-            WriteDataToTopicResponse.class).getBody();
+    if (SERVER_ADDRESS.toLowerCase().startsWith("https")) {
+      response = this.httpsRestTemplate
+          .exchange(builder.build().encode().toUri(), HttpMethod.POST, new HttpEntity<>(data, headers),
+              WriteDataToTopicResponse.class).getBody();
+    } else {
+      response = this.httpRestTemplate
+          .exchange(builder.build().encode().toUri(), HttpMethod.POST, new HttpEntity<>(data, headers),
+              WriteDataToTopicResponse.class).getBody();
+    }
 
     if (response == null) {
       throw new RuntimeException("the response is null");
