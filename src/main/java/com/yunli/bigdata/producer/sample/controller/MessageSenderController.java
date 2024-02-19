@@ -27,7 +27,7 @@ public class MessageSenderController {
   @GetMapping(value = "")
   public ResponseEntity<String> sendMessage() {
     try {
-      String token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySWQiOiI5Y2I3YTJiZi02MjEyLTQ1N2QtOThjNC0wNTMzODU3NWU4NGMiLCJ0ZW5hbnRJZCI6IjQyMjZjOGM2LWI1ZTEtNDJiYS1iYmZjLTliOWU4NDY1MTJmYyIsImV4cGlyZWQiOiIyMDIxLTA0LTE3IDA5OjA3OjExIiwiZXhwIjoxNjE4NjIxNjMxfQ.Z_19tV_lmVzmjf1Ky3ERZpHxbOeEZFm_b14EhNyXmv8jsWcUt2ENQ6CktAINV4PJ9K7LNbGKS1hkhMqASHw7Hg";
+      String token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySWQiOiIzNTViZDE1NC1lZmE0LTQxZTMtOTA1ZC0yNWExODQxOWU4OWEiLCJ1c2VyTmFtZSI6ImxpIiwidXNlck5pY2tuYW1lIjoiZ3JlYXQiLCJvcmdhbml6YXRpb25JZCI6IjQwOWZiODk5LWJjYzgtNGJlOC1hYjdlLTM0MmNmYzkxNGE3ZCIsIm9yZ2FuaXphdGlvbk5hbWUiOiJ6aGFuZ2ppYWtvdSIsIm5hbWVzcGFjZUlkIjoibnNfemhhbmdqaWFrb3VfemhhbmdqaWFrb3UiLCJsb2dpblR5cGUiOiJ1c2VyIiwiZXhwaXJlZCI6IjIwMjQtMDItMjAgMTE6MjM6MTYiLCJleHAiOjE3MDgzOTkzOTZ9.NcK9gFYyCQ5peSK38sT5n15xaDi2IStMiD-OctVnwNHSsppwyeTNP2M1fyzFP3uf0ET7ZtPetvVHjwgai5ASoQ";
       eventSenderService.sendMessage(11L, "rain", "none", token);
       return ResponseEntity.ok().body("success");
     } catch (Exception ex) {

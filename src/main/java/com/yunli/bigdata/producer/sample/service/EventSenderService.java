@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.yunli.bigdata.infrastructure.foundation.util.JsonUtil;
+import com.yunli.bigdata.producer.sample.configuration.HttpsClientRequestFactory;
 import com.yunli.bigdata.producer.sample.domain.TopicMessage;
 import com.yunli.bigdata.producer.sample.dto.response.WriteDataToTopicResponse;
 import com.yunli.bigdata.producer.sample.util.UriComponentsBuilderUtil;
@@ -35,12 +34,6 @@ public class EventSenderService {
 
 //  private static final String SERVER_ADDRESS = "http://localhost:48183";
 
-  @Resource(name = "httpTemplate")
-  private RestTemplate httpRestTemplate;
-
-  @Resource(name = "httpsTemplate")
-  private RestTemplate httpsRestTemplate;
-
   private final Logger LOGGER = LoggerFactory.getLogger(EventSenderService.class);
 
   public void sendMessage(Long topicId, String typeCode, String compressionAlgorithm, String token) {
@@ -53,18 +46,19 @@ public class EventSenderService {
     if(StringUtils.isBlank(SERVER_ADDRESS)) {
       throw new NullPointerException("the address is null");
     }
-    WriteDataToTopicResponse response;
+
+    RestTemplate restTemplate;
+    if (SERVER_ADDRESS.toLowerCase().startsWith("https")) {
+      restTemplate = new RestTemplate(new HttpsClientRequestFactory());
+    } else {
+      restTemplate =  new RestTemplate();
+    }
+
     HttpHeaders headers = new HttpHeaders();
     headers.add("x-token", token);
-    if (SERVER_ADDRESS.toLowerCase().startsWith("https")) {
-      response = this.httpsRestTemplate
-          .exchange(builder.build().encode().toUri(), HttpMethod.POST, new HttpEntity<>(data, headers),
-              WriteDataToTopicResponse.class).getBody();
-    } else {
-      response = this.httpRestTemplate
-          .exchange(builder.build().encode().toUri(), HttpMethod.POST, new HttpEntity<>(data, headers),
-              WriteDataToTopicResponse.class).getBody();
-    }
+    WriteDataToTopicResponse response = restTemplate
+        .exchange(builder.build().encode().toUri(), HttpMethod.POST, new HttpEntity<>(data, headers),
+            WriteDataToTopicResponse.class).getBody();;
 
     if (response == null) {
       throw new RuntimeException("the response is null");
